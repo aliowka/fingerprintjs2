@@ -902,37 +902,37 @@
       }
 
       if(mobileDevice && os !== "Windows Phone" && os !== "Android" && os !== "iOS" && os !== "Other"){
-        return true;
+        return [true, "--> Pretend to be a mobile device, but you are not WinPhone, not Android, not iOS not Other"];
       }
 
       // We compare oscpu with the OS extracted from the UA
       if(typeof oscpu !== "undefined"){
         oscpu = oscpu.toLowerCase();
         if(oscpu.indexOf("win") >= 0 && os !== "Windows" && os !== "Windows Phone"){
-          return true;
+          return [true, "--> oscpu is not cpu declared in UserAgent. oscpu:" + oscpu + " ua:" + os];
         } else if(oscpu.indexOf("linux") >= 0 && os !== "Linux" && os !== "Android"){
-          return true;
+          return [true, "--> oscpu is not cpu declared in UserAgent. oscpu:" + oscpu + " ua:" + os];;
         } else if(oscpu.indexOf("mac") >= 0 && os !== "Mac" && os !== "iOS"){
-          return true;
+          return [true, "--> oscpu is not cpu declared in UserAgent. oscpu:" + oscpu + " ua:" + os];
         } else if(oscpu.indexOf("win") === 0 && oscpu.indexOf("linux") === 0 && oscpu.indexOf("mac") >= 0 && os !== "other"){
-          return true;
+          return [true, "--> oscpu is not cpu declared in UserAgent. oscpu:" + oscpu + " ua:" + os];
         }
       }
 
       //We compare platform with the OS extracted from the UA
       if(platform.indexOf("win") >= 0 && os !== "Windows" && os !== "Windows Phone"){
-        return true;
+        return [true, "--> platform is not match to declared in UserAgent:" + platform + " ua:" + os];
       } else if((platform.indexOf("linux") >= 0 || platform.indexOf("android") >= 0 || platform.indexOf("pike") >= 0) && os !== "Linux" && os !== "Android"){
-        return true;
+        return [true, "--> platform is not match to declared in UserAgent:" + platform + " ua:" + os];
       } else if((platform.indexOf("mac") >= 0 || platform.indexOf("ipad") >= 0 || platform.indexOf("ipod") >= 0 || platform.indexOf("iphone") >= 0) && os !== "Mac" && os !== "iOS"){
-        return true;
+        return [true, "--> platform is not match to declared in UserAgent:" + platform + " ua:" + os];
       } else if(platform.indexOf("win") === 0 && platform.indexOf("linux") === 0 && platform.indexOf("mac") >= 0 && os !== "other"){
-        return true;
+        return [true, "--> platform is not match to declared in UserAgent:" + platform + " ua:" + os];
       }
 
       if(typeof navigator.plugins === "undefined" && os !== "Windows" && os !== "Windows Phone"){
         //We are are in the case where the person uses ie, therefore we can infer that it's windows
-        return true;
+        return [true, "--> plugins not match to declared in UserAgent:" + navigator.plugins + " ua:" + os];
       }
 
       return false;
