@@ -81,7 +81,7 @@
           for (var index in components) {
             var obj = components[index];
             var value = obj.value;
-            var line = obj.key + " = " + value.toString().substr(0, 100);
+            var line = obj.key + " = " + value.toString().substr(0, 1000);
             console.log(line);
             details += line + "<br />";
           }
