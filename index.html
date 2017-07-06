@@ -81,7 +81,7 @@
           for (var index in components) {
             var obj = components[index];
             var value = obj.value;
-            var line = obj.key + " = " + value.toString().substr(0, 1000);
+            var line = obj.key + " = " + value.toString();
             console.log(line);
             details += line + "<br />";
           }
@@ -89,6 +89,23 @@
         $("#details").html(details);
         $("#fp").text(result);
         $("#time").text(timeString);
+	var details = {}
+	for(var i in components){
+            var obj = components[i];
+            var value = obj.value;
+            var key = obj.key;
+            details[key] = value;
+	    }
+	$.ajax({
+    		type: 'POST',
+    		url: '/snapshot',
+    		data: details,
+    		success: function(data) { alert('Your fingerprint has been taken.'); },
+    		contentType: "application/json",
+    		dataType: 'json'
+	});
+
+
       });
     });
   </script>
