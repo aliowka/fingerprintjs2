@@ -963,11 +963,11 @@
 
       var tempRes = eval.toString().length;
       if(tempRes === 37 && browser !== "Safari" && browser !== "Firefox" && browser !== "Other"){
-        return true;
+        return [true, "tempRes: " + tempRes + " Browser: " + browser ];
       } else if(tempRes === 39 && browser !== "Internet Explorer" && browser !== "Other"){
-        return true;
+        return [true, "tempRes: " + tempRes + " Browser: " + browser ];
       } else if(tempRes === 33 && browser !== "Chrome" && browser !== "Opera" && browser !== "Other"){
-        return true;
+        return [true, "tempRes: " + tempRes + " Browser: " + browser ];
       }
 
       //We create an error to see how it is handled
@@ -983,7 +983,7 @@
         }
       }
       if(errFirefox && browser !== "Firefox" && browser !== "Other"){
-        return true;
+        return [true, "errFirefox detected but the Browser is " + browser ];
       }
       return false;
     },
