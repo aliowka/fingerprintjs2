@@ -59,9 +59,9 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_OPTIONS(self):
         # allowing access control
+        self.send_response(200, "ok")
         self.send_header('Access-Control-Allow-Origin', '*')
-        # self.send_header('Access-Control-Allow-Headers: Content-Type')
-        self.send_header('Access-Control-Allow-Methods', 'POST')
+        self.send_header('Access-Control-Allow-Methods', 'POST, OPTIONS')
 
     def do_POST(self):
 
