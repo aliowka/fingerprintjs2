@@ -158,6 +158,9 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         encoding = sys.getfilesystemencoding()
         self.send_header("Content-type", "text/html; charset=%s" % encoding)
         self.send_header("Content-Length", str(length))
+
+        #allowing access control
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         return f
 

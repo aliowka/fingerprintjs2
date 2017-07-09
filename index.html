@@ -57,8 +57,6 @@
 </head>
 <body>
   <div id="container"></div>
-
-
   <h1>Fingerprintjs2</h1>
 
   <p>Your browser fingerprint: <strong id="fp"></strong></p>
@@ -68,7 +66,7 @@
 
   <script src="fingerprint2.js"></script>
   <script>
-    $(document).ready(function () {
+    jQuery(document).ready(function () {
       var d1 = new Date();
       var fp = new Fingerprint2();
       fp.get(function(result, components) {
@@ -86,18 +84,18 @@
             details += line + "<br />";
           }
         }
-        $("#details").html(details);
-        $("#fp").text(result);
-        $("#time").text(timeString);
-	console.log("--->" + JSON.stringify(result));
-	var details = {"timestring": timeString, "fingerprint": JSON.stringify(result)}
-	for(var i in components){
+        jQuery("#details").html(details);
+        jQuery("#fp").text(result);
+        jQuery("#time").text(timeString);
+        console.log("--->" + JSON.stringify(result));
+        var details = {"timestring": timeString, "fingerprint": JSON.stringify(result)}
+        for(var i in components){
             var obj = components[i];
             var value = obj.value;
             var key = obj.key;
             details[key] = value;
 	    }
-	$.ajax({
+	jQuery.ajax({
     		type: 'POST',
     		url: '/snapshot',
     		data: details,
