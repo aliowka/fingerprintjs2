@@ -89,7 +89,8 @@
         $("#details").html(details);
         $("#fp").text(result);
         $("#time").text(timeString);
-	var details = {}
+	console.log("--->" + JSON.stringify(result));
+	var details = {"timestring": timeString, "fingerprint": JSON.stringify(result)}
 	for(var i in components){
             var obj = components[i];
             var value = obj.value;
