@@ -58,6 +58,9 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             f.close()
 
     def do_POST(self):
+        # allowing access control
+        self.send_header('Access-Control-Allow-Origin', '*')
+
         try:
             length = int(self.headers.getheader('content-length'))
             data = cgi.parse_qs(self.rfile.read(length), keep_blank_values=1)
@@ -159,8 +162,6 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_header("Content-type", "text/html; charset=%s" % encoding)
         self.send_header("Content-Length", str(length))
 
-        #allowing access control
-        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
         return f
 
