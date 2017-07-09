@@ -57,11 +57,13 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         if f:
             f.close()
 
-    def do_POST(self):
+    def do_OPTIONS(self):
         # allowing access control
         self.send_header('Access-Control-Allow-Origin', '*')
-        self.send_header('Access-Control-Allow-Headers: Content-Type')
-        self.send_header('Access-Control-Allow-Methods: POST')
+        # self.send_header('Access-Control-Allow-Headers: Content-Type')
+        self.send_header('Access-Control-Allow-Methods', 'POST')
+
+    def do_POST(self):
 
         try:
             length = int(self.headers.getheader('content-length'))
