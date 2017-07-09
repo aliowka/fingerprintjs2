@@ -60,6 +60,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     def do_POST(self):
         # allowing access control
         self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Headers: Content-Type')
+        self.send_header('Access-Control-Allow-Methods: POST')
 
         try:
             length = int(self.headers.getheader('content-length'))
