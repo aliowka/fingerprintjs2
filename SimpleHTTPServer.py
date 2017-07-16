@@ -5,6 +5,7 @@ and HEAD requests in a fairly straightforward manner.
 
 """
 import json
+import re
 
 __version__ = "0.6"
 
@@ -19,16 +20,18 @@ import cgi
 import sys
 import shutil
 import mimetypes
+
 try:
     from cStringIO import StringIO
 except ImportError:
     from StringIO import StringIO
 
 import logging
-logging.basicConfig(filename='fingerprints.log',level=logging.DEBUG)
+
+logging.basicConfig(filename='fingerprints.log', level=logging.DEBUG)
+
 
 class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
-
     """Simple HTTP request handler with GET and HEAD commands.
 
     This serves files from the current directory and any of its
@@ -43,9 +46,23 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     server_version = "SimpleHTTP/" + __version__
 
     def do_GET(self):
-        content = {"peername": self.request.getpeername(),
-                   "sockname": self.request.getsockname(),
-                   "headers": self.headers.headers}
+
+        content = {"ip": []}
+
+        for header in self.headers.headers:
+            if "host" in header.lower():
+                continue
+            ip = re.findall("(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
+                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
+                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
+                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
+            if ip:
+                content["ip"].append(ip)
+
+        content.update({"peername": self.request.getpeername(),
+                        "sockname": self.request.getsockname(),
+                        "headers": self.headers.headers})
+
         self.send_header("Content-Type", "application/json")
         self.send_response(200, content)
 
@@ -176,8 +193,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
         """
         # abandon query parameters
-        path = path.split('?',1)[0]
-        path = path.split('#',1)[0]
+        path = path.split('?', 1)[0]
+        path = path.split('#', 1)[0]
         # Don't forget explicit trailing slash when normalizing. Issue17324
         trailing_slash = path.rstrip().endswith('/')
         path = posixpath.normpath(urllib.unquote(path))
@@ -234,18 +251,18 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
             return self.extensions_map['']
 
     if not mimetypes.inited:
-        mimetypes.init() # try to read system mime.types
+        mimetypes.init()  # try to read system mime.types
     extensions_map = mimetypes.types_map.copy()
     extensions_map.update({
-        '': 'application/octet-stream', # Default
+        '': 'application/octet-stream',  # Default
         '.py': 'text/plain',
         '.c': 'text/plain',
         '.h': 'text/plain',
-        })
+    })
 
 
-def test(HandlerClass = SimpleHTTPRequestHandler,
-         ServerClass = BaseHTTPServer.HTTPServer):
+def test(HandlerClass=SimpleHTTPRequestHandler,
+         ServerClass=BaseHTTPServer.HTTPServer):
     BaseHTTPServer.test(HandlerClass, ServerClass)
 
 
