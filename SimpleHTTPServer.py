@@ -58,7 +58,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
             if ip:
                 content["proxyDetected"] = "YES"
-                content["ip"].append(ip)
+                content["detectedIp"].append(ip)
+                break
 
         content.update({"peername": self.request.getpeername(),
                         "sockname": self.request.getsockname(),
