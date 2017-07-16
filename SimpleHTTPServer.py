@@ -47,7 +47,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        content = {"compromisedIps": []}
+        content = {"detectedIp": []}
         content["proxyDetected"] = "NO"
         for header in self.headers.headers:
             if "host" in header.lower():
