@@ -43,7 +43,11 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     server_version = "SimpleHTTP/" + __version__
 
     def do_GET(self):
-        self.send_response(200, self.headers)
+        content = {"peername": self.request.getpeername(),
+                   "sockname": self.request.getsockname(),
+                   "headers": self.headers.headers}
+        self.send_header("Content-Type", "application/json")
+        self.send_response(200, content)
 
     def do_HEAD(self):
         """Serve a HEAD request."""
