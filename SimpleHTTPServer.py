@@ -47,8 +47,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        content = {"ip": []}
-
+        content = {"compromisedIps": []}
+        content["proxyDetected"] = "NO"
         for header in self.headers.headers:
             if "host" in header.lower():
                 continue
@@ -57,6 +57,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
             if ip:
+                content["proxyDetected"] = "YES"
                 content["ip"].append(ip)
 
         content.update({"peername": self.request.getpeername(),
