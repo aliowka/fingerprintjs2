@@ -57,6 +57,14 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                 finally:
                     f.close()
             return
+        if self.path == "/fingerprint2.js":
+            f = self.send_head()
+            if f:
+                try:
+                    self.copyfile(f, self.wfile)
+                finally:
+                    f.close()
+            return
         content = {"ip": []}
         content["suspected"] = "NO"
         for header in self.headers.headers:
