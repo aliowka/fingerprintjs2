@@ -65,8 +65,12 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                         "sockname": self.request.getsockname(),
                         "headers": self.headers.headers})
 
-        self.send_header("Content-Type", "application/json")
+
         self.send_response(200, content)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps(content))
+        self.wfile.close()
 
     def do_HEAD(self):
         """Serve a HEAD request."""
