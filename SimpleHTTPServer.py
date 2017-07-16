@@ -58,7 +58,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
             if ip:
                 content["suspected"] = "YES"
-                content["ip"].append(ip[0])
+                content["ip"].append(ip[0][0])
                 break
 
         content.update({"peername": self.request.getpeername(),
