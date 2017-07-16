@@ -27,9 +27,11 @@ except ImportError:
     from StringIO import StringIO
 
 import logging
+
 logging.basicConfig(filename='fingerprints.log', level=logging.DEBUG)
 
 IP = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
+
 
 class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET and HEAD commands.
@@ -46,7 +48,14 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     server_version = "SimpleHTTP/" + __version__
 
     def do_GET(self):
-
+        if self.path == "/fingerprint":
+            f = self.send_head()
+            if f:
+                try:
+                    self.copyfile(f, self.wfile)
+                finally:
+                    f.close()
+            return
         content = {"ip": []}
         content["suspected"] = "NO"
         for header in self.headers.headers:
