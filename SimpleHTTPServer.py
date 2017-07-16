@@ -30,6 +30,7 @@ import logging
 
 logging.basicConfig(filename='fingerprints.log', level=logging.DEBUG)
 
+IP = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
 
 class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     """Simple HTTP request handler with GET and HEAD commands.
@@ -52,13 +53,10 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         for header in self.headers.headers:
             if "host" in header.lower():
                 continue
-            ip = re.findall("(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
-                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
-                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
-                            "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
+            ip = IP.findall(header)
             if ip:
                 content["suspected"] = "YES"
-                content["ip"].append(ip[0][0])
+                content["ip"].append(ip[0])
                 break
 
         content.update({"peername": self.request.getpeername(),
