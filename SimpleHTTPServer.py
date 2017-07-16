@@ -27,7 +27,6 @@ except ImportError:
     from StringIO import StringIO
 
 import logging
-
 logging.basicConfig(filename='fingerprints.log', level=logging.DEBUG)
 
 IP = re.compile("\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}")
@@ -66,8 +65,10 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
         self.send_response(200, content)
         self.send_header("Content-Type", "application/json")
         self.end_headers()
-        self.wfile.write(json.dumps(content))
+        content = json.dumps(content)
+        self.wfile.write(content)
         self.wfile.close()
+        print content
 
     def do_HEAD(self):
         """Serve a HEAD request."""
