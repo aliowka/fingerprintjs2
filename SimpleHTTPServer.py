@@ -49,6 +49,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
         if self.path == "/fingerprint":
+            self.path = "/"
             f = self.send_head()
             if f:
                 try:
