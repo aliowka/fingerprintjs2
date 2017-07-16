@@ -47,8 +47,8 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
 
-        content = {"detectedIp": []}
-        content["proxyDetected"] = "NO"
+        content = {"ip": []}
+        content["suspected"] = "NO"
         for header in self.headers.headers:
             if "host" in header.lower():
                 continue
@@ -57,14 +57,13 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\."
                             "(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)", header)
             if ip:
-                content["proxyDetected"] = "YES"
-                content["detectedIp"].append(ip)
+                content["suspected"] = "YES"
+                content["ip"].append(ip)
                 break
 
         content.update({"peername": self.request.getpeername(),
                         "sockname": self.request.getsockname(),
                         "headers": self.headers.headers})
-
 
         self.send_response(200, content)
         self.send_header("Content-Type", "application/json")
