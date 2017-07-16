@@ -79,7 +79,7 @@
           for (var index in components) {
             var obj = components[index];
             var value = obj.value;
-            var line = obj.key + " = " + value.toString();
+            var line = obj.key + " = " + value.toString().substring(0, 200);
             console.log(line);
             details += line + "<br />";
           }
@@ -100,7 +100,7 @@
     		url: '/snapshot',
     		data: details,
     		success: function(data) { alert('Your fingerprint has been taken.'); },
-    		contentType: "application/x-www-form-urlencoded",
+    		contentType: "text/plain",
     		dataType: 'json'
 	});
 	alert("Thanks, fingerprint has been taken.");
