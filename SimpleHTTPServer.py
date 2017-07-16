@@ -4,7 +4,7 @@ This module builds on BaseHTTPServer by implementing the standard GET
 and HEAD requests in a fairly straightforward manner.
 
 """
-
+import json
 
 __version__ = "0.6"
 
@@ -43,13 +43,7 @@ class SimpleHTTPRequestHandler(BaseHTTPServer.BaseHTTPRequestHandler):
     server_version = "SimpleHTTP/" + __version__
 
     def do_GET(self):
-        """Serve a GET request."""
-        f = self.send_head()
-        if f:
-            try:
-                self.copyfile(f, self.wfile)
-            finally:
-                f.close()
+        self.send_response(200, self.headers)
 
     def do_HEAD(self):
         """Serve a HEAD request."""
